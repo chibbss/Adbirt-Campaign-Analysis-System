@@ -1,0 +1,256 @@
+# CrewAI Advertising Campaign Analysis - Task Definitions
+# This file defines all the tasks that can be assigned to agents
+
+  tier_manager_task:
+    description: >
+      Analyze the {user_tier} from the provided user's campaign data which includes: 
+        user's tier - {user_tier},
+        the campaign name the user wants to run - {campaign_name},
+        the ad campaign objective - {campaign_objective},
+        the ad campaign description - {campaign_description},
+        the url the campaign is destined for - {campaign_destination}, 
+        the banner size - {banner_size}, 
+        the banner type - {banner_type}, 
+        daily ad budget for the campaign - {daily_ad_budget}, 
+        start date - {start_date}, 
+        end date - {end_date}, 
+        target country(s) for the ad campaign - {target_country}, and finally the media url for the banner image or video - {media_url}.
+      Based on the following subscription tiers and their entitled analysis agents:
+
+      - Basic Plan: conversion_prediction_agent, budget_allocation_agent
+      - Pro Plan: conversion_prediction_agent, budget_allocation_agent
+      - Advanced Plan: conversion_prediction_agent, bid_optimization_agent, budget_allocation_agent
+      - Enterprise Plan: ad_personalization_agent, conversion_prediction_agent, budget_allocation_agent, bid_optimization_agent
+
+      Determine which specialist analysis agents the user is entitled to based on their {user_tier}.
+
+      Return a list of the names of the specialist agents that should be activated for this campaign analysis.
+    expected_output: >
+      A list of agent names entitled for the user's tier, based on the {user_tier}.
+          The output should strictly follow this format:
+
+          ["conversion_prediction_agent", "budget_allocation_agent"]
+
+          This list will be used to dynamically activate only the appropriate analysis agents for this campaign and passing the information to the chief aggregator.
+      
+
+  conversion_prediction_task:
+    description: >
+      Analyze the provided user's campaign data which includes: 
+       user's tier - {user_tier},
+       the campaign name the user wants to run - {campaign_name},
+       the ad campaign objective - {campaign_objective},
+       the ad campaign description - {campaign_description},
+       the url the campaign is destined for - {campaign_destination}, 
+       the banner size - {banner_size}, 
+       the banner type - {banner_type}, 
+       daily ad budget for the campaign - {daily_ad_budget}, 
+       start date - {start_date}, 
+       end date - {end_date}, 
+       target country(s) for the ad campaign - {target_country}, and finally the media url for the banner image or video - {media_url}. to predict the conversion rate for this advertising campaign.
+
+      Focus on the following factors (gleaned from the campaign data):
+      - Campaign objective and description
+      - Target country demographics and market conditions
+      - Campaign duration and seasonality effects
+      - Banner size and type effectiveness
+      - Budget adequacy for the campaign duration
+    expected_output: >
+      Provide your analysis in the following format:
+
+      ```
+      # Conversion Rate Prediction Report
+
+      ## Predicted Conversion Rate
+      [Provide a specific percentage prediction]
+
+      ## Key Factors Influencing Prediction
+      - [Factor 1 with brief explanation]
+      - [Factor 2 with brief explanation]
+      - [Additional factors as needed]
+
+      ## Recommendations to Improve Conversion
+      - [Specific actionable recommendation 1]
+      - [Specific actionable recommendation 2]
+      - [Additional recommendations as needed]
+      ```
+
+
+  budget_allocation_task:
+    agent: budget_allocation_agent
+    description: >
+      Analyze the provided user's campaign data which includes: 
+       user's tier - {user_tier},
+       the campaign name the user wants to run - {campaign_name},
+       the ad campaign objective - {campaign_objective},
+       the ad campaign description - {campaign_description},
+       the url the campaign is destined for - {campaign_destination}, 
+       the banner size - {banner_size}, 
+       the banner type - {banner_type}, 
+       daily ad budget for the campaign - {daily_ad_budget}, 
+       start date - {start_date}, 
+       end date - {end_date}, 
+       target country(s) for the ad campaign - {target_country}, and finally the media url for the banner image or video - {media_url}.
+      
+      Recommend optimal budget allocation strategies.
+
+      Consider the following aspects (gleaned from the campaign data):
+      - Daily budget in relation to campaign duration
+      - Target country and associated advertising costs
+      - Campaign objective and how it affects spend priorities
+      - Seasonal factors during the campaign period
+      - Banner type and size cost implications
+    expected_output: >
+      Provide your analysis in the following format:
+
+            ```
+            # Budget Allocation Report
+
+            ## Budget Analysis
+            [Brief overview of the current budget situation]
+
+            ## Recommended Allocation Breakdown
+            - [Channel/Tactic 1]: [X]% - $[Amount] - [Brief justification]
+            - [Channel/Tactic 2]: [Y]% - $[Amount] - [Brief justification]
+            - [Additional allocations as needed]
+
+            ## Budget Optimization Recommendations
+            - [Specific actionable recommendation 1]
+            - [Specific actionable recommendation 2]
+            - [Additional recommendations as needed]
+            ```
+
+  
+
+  bid_optimization_task:
+    description: >
+      Analyze the provided user's campaign data which includes: 
+       user's tier - {user_tier},
+       the campaign name the user wants to run - {campaign_name},
+       the ad campaign objective - {campaign_objective},
+       the ad campaign description - {campaign_description},
+       the url the campaign is destined for - {campaign_destination}, 
+       the banner size - {banner_size}, 
+       the banner type - {banner_type}, 
+       daily ad budget for the campaign - {daily_ad_budget}, 
+       start date - {start_date}, 
+       end date - {end_date}, 
+       target country(s) for the ad campaign - {target_country}, and finally the media url for the banner image or video - {media_url}. 
+      Develop optimal bidding strategies.
+
+      Consider the following aspects (gleaned from the campaign data):
+      - Target country competitive landscape
+      - Daily budget constraints
+      - Campaign duration and pacing requirements
+      - Campaign objective alignment with bidding strategy
+      - Banner size and type performance expectations
+    expected_output: >
+      Provide your analysis in the following format:
+
+            ```
+            # Bid Optimization Report
+
+            ## Bidding Strategy Overview
+            [Brief description of recommended bidding approach]
+
+            ## Recommended Bid Parameters
+            - [Parameter 1]: [Value/Range] - [Brief justification]
+            - [Parameter 2]: [Value/Range] - [Brief justification]
+            - [Additional parameters as needed]
+
+            ## Performance Expectations
+            - [Expected outcome 1]
+            - [Expected outcome 2]
+            - [Additional expectations as needed]
+            ```
+
+    
+
+  ad_personalization_task:
+    description: >
+      Analyze the provided user's campaign data which includes: 
+        user's tier - {user_tier},
+        the campaign name the user wants to run - {campaign_name},
+        the ad campaign objective - {campaign_objective},
+        the ad campaign description - {campaign_description},
+        the url the campaign is destined for - {campaign_destination}, 
+        the banner size - {banner_size}, 
+        the banner type - {banner_type}, 
+        daily ad budget for the campaign - {daily_ad_budget}, 
+        start date - {start_date}, 
+        end date - {end_date}, 
+        target country(s) for the ad campaign - {target_country}, and finally the media url for the banner image or video - {media_url}.
+      Recommend personalization strategies for the ad creative.
+
+      Consider the following aspects (gleaned from the campaign data):
+      - Target country cultural preferences and norms
+      - Campaign objective and messaging alignment
+      - Banner size and type creative constraints
+      - Seasonality and timing considerations
+      - Brand positioning and voice consistency
+    expected_output: >
+      Provide your analysis in the following format:
+
+            ```
+            # Ad Personalization Report
+
+            ## Target Audience Analysis
+            [Brief overview of the target audience preferences and behaviors]
+
+            ## Creative Recommendations
+            - [Visual element recommendation] - [Brief justification]
+            - [Messaging recommendation] - [Brief justification]
+            - [Call-to-action recommendation] - [Brief justification]
+            - [Additional recommendations as needed]
+
+            ## Personalization Opportunities
+            - [Specific personalization strategy 1]
+            - [Specific personalization strategy 2]
+            - [Additional strategies as needed]
+            ```
+
+    
+
+  chief_aggregator_task:
+    description: >
+      Synthesize the reports from the specialist analysis agents for the user's campaign data which includes: 
+        user's tier - {user_tier},
+        the campaign name the user wants to run - {campaign_name},
+        the ad campaign objective - {campaign_objective},
+        the ad campaign description - {campaign_description},
+        the url the campaign is destined for - {campaign_destination}, 
+        the banner size - {banner_size}, 
+        the banner type - {banner_type}, 
+        daily ad budget for the campaign - {daily_ad_budget}, 
+        start date - {start_date}, 
+        end date - {end_date}, 
+        target country(s) for the ad campaign - {target_country}, and finally the media url for the banner image or video - {media_url}.
+      into a consolidated final campaign analysis report.
+
+      You will receive reports only from the agents that the user is entitled to based on their subscription tier.
+      Ensure that your final report only includes information and recommendations derived from these provided reports.
+
+     
+
+      Important: Only include information from the reports you have received. Do not invent or assume analyses from agents that were not activated for this user tier.
+    expected_output: >
+      A consolidated final campaign analysis report based on the user's tier entitlements.
+      Provide your consolidated analysis in the following format:
+
+           ```
+           **Campaign Performance Overview:**
+           - **Predicted Conversion Rate:** [Percentage probability on a scale of 0-100%] 
+
+           **Key Strengths Identified:**
+           - [Bulleted list of positive aspects synthesized from the available agent reports]
+
+           **Key Recommendations for Improvement:**
+           - [Bulleted list of actionable recommendations synthesized from the available agent reports]
+
+           **Suggested New Campaign Details:**
+           - [Structured list or key-value pairs of suggested changes based on the available agent reports, including budget, bidding, personalization, etc.]
+      
+            **Predicted Conversion Rate**
+            - **Predicted Conversion Rate IF the user acts on the key recommendations and suggested new details:**  
+            Based on the synthesized agent reports and optimization strategies, AdBirt AI estimates your campaign 
+           ```
