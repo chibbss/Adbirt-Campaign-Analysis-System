@@ -49,7 +49,7 @@ class AdCampaignAnalysisCrew:
             config=self.agents_config["tier_manager"],
             tools=[],
             allow_delegation=True,
-            verbose=True
+            verbose=False,
         )
 
     @agent
@@ -58,7 +58,7 @@ class AdCampaignAnalysisCrew:
             config = self.agents_config["conversion_prediction_agent"],
             tools=[],
             allow_delegation=False,
-            verbose=True,
+            verbose=False,
         )
 
     @agent
@@ -67,7 +67,7 @@ class AdCampaignAnalysisCrew:
             config = self.agents_config["budget_allocation_agent"],
             tools=[],
             allow_delegation=False,
-            verbose=True,
+            verbose=False,
         )
 
     @agent
@@ -85,7 +85,7 @@ class AdCampaignAnalysisCrew:
             config = self.agents_config["ad_personalization_agent"],
             tools=[],
             allow_delegation=False,
-            verbose=True,
+            verbose=False,
         )
 
     @agent
@@ -94,7 +94,7 @@ class AdCampaignAnalysisCrew:
             config = self.agents_config["chief_aggregator"],
             tools=[],
             allow_delegation=False,
-            verbose=True,
+            verbose=False,
         )
 
     # === TASKS ===
@@ -151,5 +151,5 @@ class AdCampaignAnalysisCrew:
             agents=self.agents,
             tasks=self.tasks,
             process=Process.sequential,
-            verbose=True,
+            verbose=False,
         )

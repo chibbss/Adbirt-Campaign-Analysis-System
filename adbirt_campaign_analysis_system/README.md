@@ -1,56 +1,207 @@
-# AdbirtAI Campaign Analysis Crew
+# AdBirt AI Campaign Analysis API
 
-Welcome to the AdbirtAI Campaign Analysis Crew project, powered by [crewAI](https://crewai.com). This template is designed to help you set up a multi-agent AI system with ease, leveraging the powerful and flexible framework provided by crewAI. Our goal is to enable your agents to collaborate effectively on complex tasks, maximizing their collective intelligence and capabilities.
+A FastAPI-based backend service that leverages CrewAI and various AI agents to analyze and optimize advertising campaigns.
 
-## Installation
+## Overview
 
-Ensure you have Python >=3.10 <3.13 installed on your system. This project uses [UV](https://docs.astral.sh/uv/) for dependency management and package handling, offering a seamless setup and execution experience.
+This API provides AI-powered insights for digital advertising campaigns, offering various analysis features based on user subscription tier:
 
-First, if you haven't already, install uv:
+- **Conversion Prediction**: Analyzes campaign metrics to predict conversion probabilities
+- **Budget Allocation**: Optimizes ad spend distribution for maximum ROI
+- **Bid Optimization**: Determines optimal bid prices for real-time bidding (RTB) auctions
+- **Ad Personalization**: Tailors ad creatives based on audience targeting
 
-```bash
-pip install uv
+## Subscription Tiers
+
+The API supports different feature sets based on the user's subscription plan:
+
+- **Basic Plan ($5/month)**: Conversion Prediction, Budget Allocation
+- **Pro Plan ($9/month)**: Conversion Prediction, Budget Allocation, priority support
+- **Advanced Plan ($10.99/month)**: Conversion Prediction, Bid Optimization, Budget Allocation
+- **Enterprise Plan ($12.99/month)**: Ad Personalization, Conversion Prediction, AI-Driven Recommendation, Account Management, Budget Allocation
+
+## API Endpoints
+
+### Health Check
+```
+GET /health
+```
+Returns the status of the API.
+
+### Campaign Analysis
+```
+POST /campaign/analyze/
+```
+Analyzes campaign data based on the selected agent and user tier.
+
+#### Request Format
+```json
+{
+  "user_tier": "basic",
+  "agent_selected": "conversion_prediction",
+  "campaign_name": "Summer Sales Boost",
+  "campaign_objective": "Increase conversions",
+  "campaign_description": "A campaign to promote summer deals",
+  "campaign_destination": "https://example.com/summer-sale",
+  "banner_size": "300x250",
+  "banner_type": "static",
+  "daily_ad_budget": 500.0,
+  "start_date": "2025-04-01",
+  "end_date": "2025-04-30",
+  "target_country": ["US", "UK", "Canada"],
+  "media_url": "https://example.com/banner.jpg"
+}
 ```
 
-Next, navigate to your project directory and install the dependencies:
+#### Response Format
+The API returns responses in the following format:
 
-(Optional) Lock the dependencies and install them by using the CLI command:
-```bash
-crewai install
+```json
+{
+  "status": "success",
+  "data": "Detailed analysis content based on the agent selected"
+}
 ```
 
-### Customizing
-
-**Add your `OPENAI_API_KEY` into the `.env` file**
-
-- Modify `src/adbirt_campaign_analysis_system/config/agents.yaml` to define your agents
-- Modify `src/adbirt_campaign_analysis_system/config/tasks.yaml` to define your tasks
-- Modify `src/adbirt_campaign_analysis_system/crew.py` to add your own logic, tools and specific args
-- Modify `src/adbirt_campaign_analysis_system/main.py` to add custom inputs for your agents and tasks
-
-## Running the Project
-
-To kickstart your flow and begin execution, run this from the root folder of your project:
-
-```bash
-crewai run
+**Example Response (Ad Personalization)**:
+```json
+{
+  "status": "success",
+  "data": "**Ad Personalization Report for the \"Summer Sales Boost\" Campaign**\n\n**1. Recommended Creative Variations:**\n- **Dynamic Imagery:** Incorporate dynamic elements in the static banner, such as rotating images of various summer products, to capture different interests within the audience.\n- **Localized Content:** Create variations of the ad that include localized images or references to cultural symbols relevant to the US, UK, and Canada. For instance, featuring iconic summer locations or events from each country.\n- **Personalized Messaging:** Use personalized text overlays that address the specific audience segment, such as \"Enjoy Summer in [Country] with Our Exclusive Deals!\"\n\n**2. Expected Engagement Improvements:**\n- By integrating dynamic imagery and localized content, we anticipate an increase in engagement by approximately 15-20%, as these elements resonate more effectively with the audience's cultural and personal preferences.\n- Personalized messaging is expected to enhance the click-through rate (CTR) from 1.5% to potentially 2.0%, improving the overall interaction with the ad.\n\n**3. AI-Driven Insights for Content Tailoring:**\n- **User Behavior Analysis:** Utilize AI tools to analyze user interaction data, identifying patterns that can inform future creative adjustments. For instance, if a particular product image receives higher engagement, prioritize it in future ads.\n- **Sentiment Analysis:** Implement AI-driven sentiment analysis on feedback or comments related to the campaign to gauge audience reactions and adapt the messaging accordingly.\n- **Predictive Engagement Models:** Deploy AI models to predict which creative elements are likely to perform best based on historical data and current trends, allowing for proactive adjustments.\n\n**4. Creative Insights for Better Engagement:**\n- **Color Psychology:** Use bright, summer-themed colors that evoke a sense of excitement and urgency, encouraging users to engage with the ad.\n- **Call-to-Action (CTA) Optimization:** Test different CTAs, such as \"Shop Now,\" \"Discover Deals,\" or \"Uncover Savings,\" to determine which generates the highest response rate.\n- **Visual Hierarchy:** Ensure that the most critical information, such as discounts or limited-time offers, is prominently displayed to capture attention immediately.\n\nBy implementing these personalized ad variations and leveraging AI-driven insights, the \"Summer Sales Boost\" campaign is poised to significantly enhance its engagement and conversion rates. This approach not only aligns with the campaign's objective to increase conversions but also maximizes the effectiveness of the allocated budget, ensuring a robust return on investment."
+}
 ```
 
-This command initializes the adbirt_campaign_analysis_system Flow as defined in your configuration.
+## Setup Instructions
 
-This example, unmodified, will run the create a `report.md` file with the output of a research on LLMs in the root folder.
+### Prerequisites
+- Python 3.8+
+- OpenAI API key
+- Git
 
-## Understanding Your Crew
+### Installation Guide
 
-The adbirt_campaign_analysis_system Crew is composed of multiple AI agents, each with unique roles, goals, and tools. These agents collaborate on a series of tasks, defined in `config/tasks.yaml`, leveraging their collective skills to achieve complex objectives. The `config/agents.yaml` file outlines the capabilities and configurations of each agent in your crew.
+#### 1. Clone the Repository
+```bash
+git clone https://github.com/adbirt/Adbirt-Campaign-Optimizer.git
+cd Adbirt-Campaign-Optimizer
+```
 
-## Support
+#### 2. Set Up a Virtual Environment
+```bash
+# Create a virtual environment
+python -m venv env
 
-For support, questions, or feedback regarding the {{crew_name}} Crew or crewAI.
+# Activate the virtual environment
+# On Windows:
+env\Scripts\activate
+# On macOS/Linux:
+source env/bin/activate
+```
 
-- Visit our [documentation](https://docs.crewai.com)
-- Reach out to us through our [GitHub repository](https://github.com/joaomdmoura/crewai)
-- [Join our Discord](https://discord.com/invite/X4JWnZnxPb)
-- [Chat with our docs](https://chatg.pt/DWjSBZn)
+#### 3. Upgrade Package Management Tools
+```bash
+pip install --upgrade pip setuptools wheel
+```
 
-Let's create wonders together with the power and simplicity of crewAI.
+#### 4. Install Core Dependencies
+```bash
+pip install crewai fastapi uvicorn openai langchain langchain-openai
+```
+
+#### 5. Install Additional Dependencies
+```bash
+pip install pydantic python-dotenv tiktoken requests
+```
+
+#### 6. Install Search Tool
+```bash
+pip install -U duckduckgo-search
+```
+
+#### 7. Set Up Environment Variables
+Create a `.env` file in the project root with the following variables:
+```
+OPENAI_API_KEY=your_openai_api_key
+OPENAI_ORGANIZATION_ID=your_organization_id
+```
+
+#### 8. Run the Server
+```bash
+uvicorn api:app --reload
+```
+
+## Example Usage
+
+### cURL
+
+```bash
+curl -X POST http://localhost:8000/analyze \
+  -H "Content-Type: application/json" \
+  -d '{
+    "user_tier": "enterprise",
+    "campaign_name": "Q2 Marketing Blitz",
+    "campaign_objective": "Increase brand awareness and sales",
+    "campaign_description": "This campaign focuses on boosting our visibility and driving conversions through targeted digital marketing strategies.",
+    "campaign_destination": "https://www.brandsite.com",
+    "banner_size": "300x250",
+    "banner_type": "static",
+    "daily_ad_budget": 5000.00,
+    "start_date": "2025-05-01",
+    "end_date": "2025-06-30",
+    "target_country": ["Nigeria"],
+    "media_url": "https://www.brandsite.com/assets/media/creative-banner.jpg"
+  }'
+```
+
+### Python
+
+```python
+import requests
+import json
+
+url = "http://localhost:8000/campaign/analyze/"
+headers = {"Content-Type": "application/json"}
+payload = {
+    "user_tier": "premium",
+    "campaign_name": "Summer Sales Boost",
+    "campaign_objective": "Increase conversions",
+    "campaign_description": "A campaign to promote summer deals",
+    "campaign_destination": "https://example.com/summer-sale",
+    "banner_size": "300x250",
+    "banner_type": "static",
+    "daily_ad_budget": 500.0,
+    "start_date": "2025-04-01",
+    "end_date": "2025-04-30",
+    "target_country": ["US", "UK", "Canada"],
+    "media_url": "https://example.com/banner.jpg"
+}
+
+response = requests.post(url, headers=headers, data=json.dumps(payload))
+print(response.json())
+```
+
+## Architecture
+
+The system is built on these core components:
+- **FastAPI**: Handles HTTP requests and responses
+- **CrewAI**: Orchestrates the AI agents working together
+- **OpenAI Models**: Powers the AI capabilities
+  - GPT-3.5-Turbo: Used for basic tier management
+  - GPT-4o-Mini: Powers conversion prediction, budget allocation, and bid optimization
+  - GPT-4o: Powers advanced ad personalization features
+
+## Troubleshooting
+
+Common issues and solutions:
+
+1. **API Key Authentication Errors**:
+   - Ensure your `.env` file has the correct OpenAI API key
+   - Check that the environment variables are properly loaded
+
+2. **Dependency Conflicts**:
+   - Use a dedicated virtual environment
+   - Follow the installation steps in the correct order
+
+3. **Server Won't Start**:
+   - Check for port conflicts (default is 8000)
+   - Ensure all dependencies are correctly installed
