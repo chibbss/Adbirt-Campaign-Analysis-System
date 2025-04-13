@@ -1,16 +1,16 @@
 from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel, HttpUrl, Field
-from typing import List, Optional, Dict
-from crew import AdCampaignAnalysisCrew, FinalCampaignAnalysisReport
-from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
+from pydantic import BaseModel
+from typing import List
 import json
+from crew import AdCampaignAnalysisCrew
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 
-# Optional: Enable CORS if needed
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["*"],  # or your frontend domain
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -32,42 +32,33 @@ class CampaignInput(BaseModel):
     media_url: str  # same here, keep as str for now
 
 
-# Function to generate pretty JSON output
-def generate_json_output(data):
-    """
-    Converts the input data into a pretty-printed JSON format.
-    """
-    return json.dumps(data, indent=4)
-
-
-@app.post("/analyze", response_model=FinalCampaignAnalysisReport)
+@app.post("/analyze")
 async def analyze_campaign(campaign_data: CampaignInput):
     try:
-        # Step 1: Prepare input for the crew
         raw_input = campaign_data.dict()
-
-        # Step 2: Initialize and run crew
         campaign_crew = AdCampaignAnalysisCrew()
         raw_output = campaign_crew.crew().kickoff(inputs=raw_input)
 
-        # Step 3: Handle output if it's a string
-        if isinstance(raw_output, str):
-            try:
-                raw_output = json.loads(raw_output)
-            except Exception:
-                raise HTTPException(status_code=500, detail="Crew output was not valid JSON.")
+        # Convert CrewOutput-like object to dict if needed
+        if hasattr(raw_output, "dict"):
+            raw_output = raw_output.dict()
+        elif hasattr(raw_output, "to_dict"):
+            raw_output = raw_output.to_dict()
 
-        # Step 4: Convert dict to response model
+        # If it’s now a dict, check for json_dict or raw
         if isinstance(raw_output, dict):
-            try:
-                # Generate JSON output
-                json_output = generate_json_output(raw_output)
-                # Return the formatted JSON in the response
-                return {"formatted_json": json_output}
-            except Exception as e:
-                raise HTTPException(status_code=500, detail=f"Output format mismatch: {str(e)}")
+            if 'json_dict' in raw_output:
+                return JSONResponse(content=raw_output['json_dict'], status_code=200)
+            elif 'raw' in raw_output:
+                try:
+                    parsed = json.loads(raw_output['raw'])
+                    return JSONResponse(content=parsed, status_code=200)
+                except json.JSONDecodeError:
+                    # fallback — send the entire thing
+                    return JSONResponse(content=raw_output, status_code=200)
 
-        raise HTTPException(status_code=500, detail="Crew did not return a valid JSON object.")
+        # Fallback: try to return raw_output anyway (last resort)
+        return JSONResponse(content=raw_output, status_code=200)
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
