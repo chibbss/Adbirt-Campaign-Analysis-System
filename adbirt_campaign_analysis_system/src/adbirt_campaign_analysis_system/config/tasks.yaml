@@ -55,6 +55,8 @@
       - Campaign duration and seasonality effects
       - Banner size and type effectiveness
       - Budget adequacy for the campaign duration
+      
+      You are to use your expertise as a facebook
     expected_output: >
       Provide your analysis in the following format:
 

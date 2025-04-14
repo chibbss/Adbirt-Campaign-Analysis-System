@@ -30,7 +30,7 @@ Returns the status of the API.
 
 ### Campaign Analysis
 ```
-POST /campaign/analyze/
+POST /analyze/
 ```
 Analyzes campaign data based on the selected agent and user tier.
 
@@ -82,8 +82,8 @@ The API returns responses in the following format:
 
 #### 1. Clone the Repository
 ```bash
-git clone https://github.com/adbirt/Adbirt-Campaign-Optimizer.git
-cd Adbirt-Campaign-Optimizer
+git clone https://github.com/adbirt/Adbirt-Campaign-Analysis-System.git
+cd Adbirt-Campaign-Analysis-System
 ```
 
 #### 2. Set Up a Virtual Environment

@@ -5,6 +5,7 @@ from typing import List
 import json
 from crew import AdCampaignAnalysisCrew
 from fastapi.middleware.cors import CORSMiddleware
+from datetime import datetime, timedelta
 
 app = FastAPI()
 
@@ -62,6 +63,21 @@ async def analyze_campaign(campaign_data: CampaignInput):
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+
+
+# Capture the app start time
+start_time = datetime.utcnow()
+
+@app.get("/health", tags=["Health Check"])
+def health_check():
+    uptime: timedelta = datetime.utcnow() - start_time
+    return JSONResponse(
+        content={
+            "status": "ok",
+            "uptime": str(uptime)
+        }
+    )
 
 
 if __name__ == "__main__":

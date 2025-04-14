@@ -1,6 +1,5 @@
 # crew.py
 
-from typing import List
 from crewai import Agent, Crew, Process, Task
 from crewai.project import CrewBase, agent, crew, task, output_json
 from textwrap import dedent
@@ -10,28 +9,33 @@ from dotenv import load_dotenv
 load_dotenv()
 
 from pydantic import BaseModel, Field
-from typing import List, Dict, Optional
+from typing import List, Dict, Optional, Union
+
 
 class FinalCampaignAnalysisReport(BaseModel):
-    predicted_conversion_rate: Optional[float] = Field(
-        None,
-        description="Predicted conversion rate as a percentage (0-100%). Include only if the conversion_prediction_agent was used."
-    )
-    key_strengths: List[str] = Field(
-        default_factory=list,
-        description="Bulleted list of positive aspects synthesized from available agent reports."
-    )
-    key_recommendations: List[str] = Field(
-        default_factory=list,
-        description="Bulleted list of actionable recommendations synthesized from available agent reports."
-    )
-    suggested_new_campaign_details: Dict[str, str] = Field(
+    current_metrics: Optional[Dict[str, float]] = Field(
         default_factory=dict,
-        description="Suggested changes based on available agent reports (e.g., budget, bidding, personalization)."
+        description="Current campaign metrics based on campaign details - a conversion prediction probability score and a campaign success score representing an aggregation of all the reports available to the user."
     )
-    projected_conversion_if_optimized: Optional[str] = Field(
-        None,
-        description="A concise note estimating improved conversion rate if the user implements the key recommendations, with the final %"
+
+    strengths: Optional[List[Dict[str, str]]] = Field(
+        default_factory=list,
+        description="List of campaign strengths with id, title, and description."
+    )
+
+    original_campaign: Optional[Dict[str, Union[str, float, List[str]]]] = Field(
+        default_factory=dict,
+        description="The original campaign details as submitted by the user."
+    )
+
+    optimized_campaign: Optional[Dict[str, Union[str, float, List[str]]]] = Field(
+        default_factory=dict,
+        description="An optimized version of the campaign details generated using insights from all agents. This includes a better campaign name, tweaked start/end dates for better timing, possibly improved banner format, and refined budget suggestions based on predicted effectiveness. All fields reflect improved values while maintaining original intent."
+    )
+
+    optimization_summary: Optional[List[Dict[str, str]]] = Field(
+        default_factory=list,
+        description="A list of recommended changes and their expected improvements. Each entry should explain what was changed and why it’s beneficial."
     )
 
 @CrewBase
@@ -49,7 +53,7 @@ class AdCampaignAnalysisCrew:
             config=self.agents_config["tier_manager"],
             tools=[],
             allow_delegation=True,
-            verbose=False,
+            verbose=True,
         )
 
     @agent
@@ -58,7 +62,7 @@ class AdCampaignAnalysisCrew:
             config = self.agents_config["conversion_prediction_agent"],
             tools=[],
             allow_delegation=False,
-            verbose=False,
+            verbose=True,
         )
 
     @agent
@@ -67,7 +71,7 @@ class AdCampaignAnalysisCrew:
             config = self.agents_config["budget_allocation_agent"],
             tools=[],
             allow_delegation=False,
-            verbose=False,
+            verbose=True,
         )
 
     @agent
@@ -85,7 +89,7 @@ class AdCampaignAnalysisCrew:
             config = self.agents_config["ad_personalization_agent"],
             tools=[],
             allow_delegation=False,
-            verbose=False,
+            verbose=True,
         )
 
     @agent

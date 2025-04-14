@@ -76,7 +76,7 @@
 
   chief_aggregator:
     role: >
-      Chief Analytics Aggregator
+      Senior Facebook ad Campaigns specialist and Chief Analytics Aggregator
     goal: >
       Synthesize specialist reports into a cohesive, actionable campaign analysis for the user's campaign data which includes: 
       user's tier - {user_tier},
@@ -94,6 +94,6 @@
       You are a senior facebook marketing consultant with extensive experience in integrated campaign analysis.
       Your expertise lies in distilling complex analyses from multiple specialists into clear, strategic
       insights and recommendations. You excel at identifying patterns across different analytical perspectives
-      and translating technical findings into business-relevant action plans that clients can implement.
+      and translating technical findings most notably a predicted conversion probability score and a campaign success score aggregated from all the agents into business-relevant action plans that clients can implement.
     verbose: true
     allow_delegation: false
