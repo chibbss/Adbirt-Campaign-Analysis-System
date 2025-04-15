@@ -124,6 +124,7 @@
 
   
 
+
   bid_optimization_task:
     description: >
       Analyze the provided user's campaign data which includes: 
@@ -167,6 +168,7 @@
             ```
 
     
+
 
   ad_personalization_task:
     description: >
@@ -213,6 +215,7 @@
 
     
 
+
   chief_aggregator_task:
     description: >
       Synthesize the reports from the specialist analysis agents for the user's campaign data which includes: 
@@ -241,7 +244,8 @@
 
            ```
            **Campaign Performance Overview:**
-           - **Predicted Conversion Rate:** [Percentage probability on a scale of 0-100%] 
+           - **Predicted Conversion Rate:** [Percentage probability on a scale of 0-100%]
+           - **Campaign Success Score:** [a composite metric that reflects the current campaign details and a measure of how good the AI views the campaign on a scale of 0 to 100]
 
            **Key Strengths Identified:**
            - [Bulleted list of positive aspects synthesized from the available agent reports]
@@ -250,7 +254,7 @@
            - [Bulleted list of actionable recommendations synthesized from the available agent reports]
 
            **Suggested New Campaign Details:**
-           - [Structured list or key-value pairs of suggested changes based on the available agent reports, including budget, bidding, personalization, etc.]
+           - [Structured list or key-value pairs of an AI optimized version of the user's campaign details (campaign name, description, start and end date, daily ad budget, banner type, banner size, target country(s), geared towards improving the campaign success score and predicted conversion rate. ]
       
             **Predicted Conversion Rate**
             - **Predicted Conversion Rate IF the user acts on the key recommendations and suggested new details:**  

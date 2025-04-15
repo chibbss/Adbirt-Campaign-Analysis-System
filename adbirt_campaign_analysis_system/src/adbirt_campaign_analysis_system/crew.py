@@ -15,7 +15,7 @@ from typing import List, Dict, Optional, Union
 class FinalCampaignAnalysisReport(BaseModel):
     current_metrics: Optional[Dict[str, float]] = Field(
         default_factory=dict,
-        description="Current campaign metrics based on campaign details - a conversion prediction probability score and a campaign success score representing an aggregation of all the reports available to the user."
+        description="Current campaign metrics based on campaign details - a conversion prediction probability score and a campaign success score ONLY representing an aggregation of all the reports available to the user."
     )
 
     strengths: Optional[List[Dict[str, str]]] = Field(
